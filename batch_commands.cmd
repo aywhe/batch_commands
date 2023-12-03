@@ -10,10 +10,10 @@ if "%~5"=="" (
     goto END
 )
 rem  look for all files
-set n=4
-set exe_args="%~5"
-set c=0
 setlocal enabledelayedexpansion
+set n=4
+set exe_args=%5
+set c=0
 for %%i in (%*) do (
   set /a c+=1
   if !c! gtr %n% (set exe_args=!exe_args! %%i)
@@ -33,13 +33,16 @@ for /r "%frompath%" %%a in (%fromext%) do (
     rem @echo thistopath  !thistopath!
     if not exist "!thistopath!" mkdir "!thistopath!"
     rem  make exe parameters script
-    set exe_script=%exe_args%
+    rem set exe_script=%exe_args%
+    rem @echo exe_args %exe_args%
     rem @echo !exe_script!
-    set exe_script=!exe_script:_@fromfile=! "!fromfile!"!!
-    set exe_script=!exe_script:_@tofile=! "!tofile!"!!
+    rem set exe_script=!exe_script:_@fromfile="!fromfile!"!
+    rem set exe_script=!exe_script:_@tofile="!tofile!"!
+    set exe_script=%exe_args:_@fromfile="!fromfile!"%
+    set exe_script=!exe_script:_@tofile=!"!tofile!"!!
     rem  do task for every file
     rem @echo proc file: %%a
-    @echo !exe_script!
+    @echo exe_script !exe_script!
     !exe_script!
     rem echo start /i /wait !exe_script! > 1.txt
     rem call !exe_script!
